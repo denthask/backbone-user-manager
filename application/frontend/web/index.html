@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Backbone.js beginner</title>
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>User manager</h1>
+        <hr />
+        <div class="page inner-content">
+            content
+        </div>
+    </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.2/underscore-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone-min.js"></script>
+
+    <script type="text/template" id="user-list-template">
+        <table class="table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Password</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+                <% _.each(users, function (user) { %>
+                <tr>
+                    <td><%= user.get('id') %></td>
+                    <td><%= user.get('name') %></td>
+                    <td><%= user.get('email') %></td>
+                    <td><%= user.get('password') %></td>
+                    <td></td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </script>
+
+    <script>
+
+        var Users = Backbone.Collection.extend({
+            url: '/usr-auth'
+        });
+
+        var UserList = Backbone.View.extend({
+            el: '.inner-content',
+            render: function () {
+                var inner = this;
+                var users = new Users();
+                users.fetch({
+                    success: function (users) {
+                        var template = _.template($('#user-list-template').html());
+                            template = template({users: users.models});
+                        inner.$el.html(template);
+                    }
+                });
+            }
+        });
+        var Router = Backbone.Router.extend({
+            routes: {
+                '': 'home'
+                //'user/:id',
+                //'user/*id',
+            }
+        });
+
+        var userList = new UserList();
+
+        var router = new Router();
+        router.on('route:home', function () {
+            //console.log('We have loaded the home page');
+            //$('.page').after('home page loaded');
+            userList.render();
+        });
+
+        Backbone.history.start();
+
+    </script>
+</body>
+</html>
