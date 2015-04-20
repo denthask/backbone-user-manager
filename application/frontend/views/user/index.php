@@ -8,7 +8,6 @@ $this->title = 'My Yii Application';
 <div class="users-crud">
 
     <?= $this->render('js_templates/user', ['model' => $model]); ?>
-
     <div class="inner-content">
 
         <div class="row">

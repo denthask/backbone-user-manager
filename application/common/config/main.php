@@ -1,6 +1,7 @@
 <?php
 return [
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
+    'language' => 'ru-RU',
     'components' => [
         'assetManager' => [
             'linkAssets' => true,
@@ -27,6 +28,17 @@ return [
         'user' => [
             'identityClass' => 'common\models\UsrAuth',
             'enableAutoLogin' => true,
+        ],
+        'i18n' => [
+            'translations' => [
+                '*' => [
+                    'class' => 'common\components\i18n\DbMessageSource',
+                    'sourceLanguage' => 'en-US',
+                    'enableCaching' => false,
+                    'messageTable' => 'message',
+                    'sourceMessageTable' => 'source_message',
+                ],
+            ],
         ],
     ],
 ];
